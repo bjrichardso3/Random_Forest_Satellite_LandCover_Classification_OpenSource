@@ -1,0 +1,189 @@
+Open-Source Satellite Pipeline Installation and Configuration Guide
+
+This guide installs a stable, reproducible Python environment for an open-source satellite processing pipeline 
+with the intention of use being for land cover classification for hydrological modelling. It uses:
+
+    Micromamba
+    Python 3.11
+    VS Code
+    conda-forge geospatial packages
+
+    The resulting environment is suitable for:
+
+    Landsat
+    Sentinel-2
+
+	satellite imagery
+
+    
+It draws on the following packages:
+
+	Package Versions
+
+	numpy>=1.24
+	pandas>=2.0
+	pyarrow>=14.0
+	geopandas>=0.14
+	shapely>=2.0
+	pyproj>=3.5
+	rasterio>=1.3
+	scikit-learn>=1.2
+	joblib>=1.3
+	matplotlib>=3.7
+	requests>=2.31
+	pystac-client>=0.7
+	planetary-computer>=1.0
+
+This guide intentionally avoids ArcPy, for the purpose of being open source.
+
+Configuration:
+| Component            | Recommendation                | Reason                                                   |
+| -------------------- | ----------------------------- | -------------------------------------------------------- |
+| Package manager      | Micromamba                    | Fast, lightweight, reproducible                          |
+| Python               | 3.11                          | Best compatibility with the Windows geospatial ecosystem |
+| Package source       | conda-forge                   | Consistent compiled GDAL stack                           |
+| IDE                  | VS Code                       | Excellent debugging and Python support                   |
+| Notebook support     | Optional                      | Useful for debugging, not required for production        |
+| Environment strategy | Dedicated project environment | Prevents dependency conflicts                            |
+
+
+Python 3.11 balances stability, package availability, support, and is still maintained, whereas some of the more recent versions of python,
+like 3.12 and 3.14 are not yet fully supported for geospatial packages/ workflows
+
+Step 1: Install Micromamba
+    Open Windows PowerShell.
+
+        PowerShell is recommended over Command Prompt because:
+
+        Micromamba integrates directly with PowerShell.
+        Activation is more reliable.
+        The profile system allows automatic environment support.
+    
+    Create Installation Folder
+        mkdir C:\micromamba
+    
+    Download Micromamba
+        Invoke-WebRequest `
+            -Uri https://micro.mamba.pm/api/micromamba/win-64/latest `
+            -OutFile C:\micromamba\micromamba.tar.bz2
+            
+    Extract
+        tar -xvjf C:\micromamba\micromamba.tar.bz2 -C C:\micromamba
+        *The .exe will be located at C:\micromamba\Library\bin\micromamba.exe
+
+    Verify Installation
+        & "C:\micromamba\Library\bin\micromamba.exe" --version
+    
+Step 2: Add Micromamba to Path
+    Still in PowerShell, add the executable location to PATH (this allows for Micromamba to be referenced as such in code rather than
+    having to include the whole path)
+        setx PATH "$env:PATH;C:\micromamba\Library\bin"
+
+    Close PowerShell and reopen new PowerShell Windows
+
+Step 3: Initialize PowerShell
+    Micromamba installs a Powershell hook into the user's profile
+        micromamba shell init -s powershell
+
+    If $Profile does not exist, then run the following to generate it and run the init command again afterwards
+        New-Item -ItemType Directory -Force -Path (Split-Path $PROFILE)
+        New-Item -ItemType File -Force -Path $PROFILE
+
+Step 4: Create Project Environment
+    Create Environment via conda-forge
+        micromamba create -n sat_pipeline python=3.11 -c conda-forge
+
+    Activate the Environment
+        micromamba activate sat_pipeline
+    *The Environment must be activated everytime a new terminal is opened
+
+Step 5: Install packages
+    Install the following geospatial stack via conda-forge
+        micromamba install -c conda-forge `
+        rasterio `
+        geopandas `
+        gdal `
+        pyproj `
+        fiona `
+        shapely `
+        numpy `
+        pandas `
+        requests `
+        pystac-client `
+        planetary-computer `
+        tqdm `
+        ipykernel
+
+Step 6 (Optional): Register the Jupyter Kernel
+    Allows the notebooks to use the same environment
+        python -m ipykernel install --user `
+        --name sat_pipeline `
+        --display-name "Python (sat_pipeline)"
+
+Step 7: Install VS Code
+    Install VS code, the python extensions, and the Jupyter extension (optional)
+
+Step 8: Configure VS Code
+    Open the project folder upon launching VS Code
+        Ctrl + Shift + P
+    
+    Select Interpreter:
+        Python: Select Interpreter
+    
+    Select Version:
+        Python 3.11.15 ('sat_pipeline')
+    
+    Verify choice in terminal:
+        python --version
+
+Step 9: Set up Project Folder Structure
+    Landsat_Automation_Open_Source/
+    │Scripts/
+    ├── config.py
+    ├── main.py
+    ├── environment.yml
+    ├── README.md
+    ├── SETUP.md
+    ├── p1_download_satellite.py
+    ├── p2_build_multiband.py
+    ├── p3_cloud_mask.py
+    ├── p4_indices.py
+    ├── p5_classification.py
+    ├── p6_annual_composite.py
+    ├── p7_reproject.py
+    ├── p8_ascii_export.py
+    │
+    ├data/
+    ├── raw/
+    ├── intermediate/
+    ├── output/
+    └── temp/
+    │
+    ├logs/
+    │
+    ├notebooks/
+    |
+    |.git
+    │
+    ├.vscode/
+    ├── settings.json
+
+Step 10: Export the Environment
+    Export the environment to make it reproducible
+        micromamba env export -n sat_pipeline > environment.yml
+    
+    Create environment on a new machine by
+        micromamba create -f environment.yml
+
+Step 11: Run the training and/ or pipeline command line code (featured in powershell_run_commands.md)
+    Ensure the environment is activate
+
+
+Possible Problems and Sollutions
+| Problem                                              | Likely cause                   | Solution                                                                            |
+| ---------------------------------------------------- | ------------------------------ | ----------------------------------------------------------------------------------- |
+| `micromamba activate` reports shell not initialized  | PowerShell hook not installed  | Run `micromamba shell init -s powershell` and reload the profile with `. $PROFILE`. |
+| `No module named ipykernel`                          | `ipykernel` not installed      | Install it with `micromamba install -c conda-forge ipykernel`.                      |
+| VS Code terminal shows Python 3.12                   | Terminal shell not activated   | Run `micromamba activate sat_pipeline` in the terminal.                             |
+| VS Code runs the wrong interpreter                   | Interpreter not selected       | Use **Python: Select Interpreter** and choose `sat_pipeline`.                       |
+| `CMD.EXE was started... UNC paths are not supported` | Project opened from a UNC path | Open the project using a mapped drive (e.g. `B:`) instead of `\\server\share`.      |

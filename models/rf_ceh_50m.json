@@ -1,0 +1,43 @@
+{
+  "model": "RandomForestClassifier(class_weight='balanced_subsample', n_estimators=500,\n                       n_jobs=-1, oob_score=True, random_state=42)",
+  "feature_names": [
+    "blue",
+    "green",
+    "red",
+    "nir",
+    "swir1",
+    "swir2",
+    "ndvi",
+    "nbr",
+    "ndwi",
+    "savi",
+    "evi",
+    "water_fraction"
+  ],
+  "resolution": 50,
+  "random_seed": 42,
+  "algorithm": "RandomForestClassifier",
+  "parameters": {
+    "n_estimators": 500,
+    "max_features": "sqrt",
+    "min_samples_leaf": 1,
+    "class_weight": "balanced_subsample",
+    "bootstrap": true,
+    "oob_score": true
+  },
+  "training_samples": 477,
+  "training_class_counts": {
+    "2": 442,
+    "7": 15,
+    "10": 15,
+    "9": 4,
+    "1": 1
+  },
+  "cv_results": [],
+  "cv_mean": {
+    "accuracy": NaN,
+    "balanced_accuracy": NaN,
+    "f1_macro": NaN
+  },
+  "oob_score": 0.9433962264150944
+}

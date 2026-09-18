@@ -77,9 +77,9 @@ def run_training(
         aoi_name
     )
 
+    # Raw satellite scenes may shared between AOIs. They are organised by year only because the downloaded satellite scenes are not catchment-clipped.
     raw_dir = (
         RAW_DIR
-        / aoi_id
         / str(training_year)
     )
 

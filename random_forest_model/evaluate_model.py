@@ -400,6 +400,7 @@ def evaluate_sample_file(
                 aoi_name,
                 model_year,
                 resolution,
+                evaluation_year=evaluation_year,
             )
             + "_CEH"
         )
@@ -460,6 +461,7 @@ def evaluate_sample_file(
                 aoi_name,
                 model_year,
                 resolution,
+                evaluation_year=evaluation_year,
             )
             + "_SHETRAN"
         ),

@@ -206,7 +206,7 @@ python -m random\_forest\_model.run\_external\_evaluation `
 
 &#x20;   --reference "**Add file path to authoritative land cover dataset (i.e. CEH Land cover) (for external evaluation year which could be different than what was trained on)**" `
 
-&#x20;   --year **2023** `
+&#x20;   --year **External Evaluation Year** `
 
 &#x20;   --resolution **50** `
 
@@ -252,9 +252,9 @@ python -m pipeline.main\_run\_pipeline `
 
 &#x20;   --aoi "**Add file path of area of interest shapefile here**" `
 
-&#x20;   --start-year **2023** `
+&#x20;   --start-year **Desired Start Year** `
 
-&#x20;   --end-year **2023** `
+&#x20;   --end-year **Desired End Year** `
 
 &#x20;   --resolution **50** `
 

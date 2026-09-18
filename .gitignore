@@ -1,0 +1,10 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+#models folder
+models/
+
+# Trained machine-learning models (these should already be in the models folder)
+*.joblib

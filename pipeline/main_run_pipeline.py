@@ -61,12 +61,12 @@ def run_pipeline(
         Path(aoi).stem
     )
 
-    # AOI-specific data directories.
-
+    # Raw satellite scenes may be shared between AOIs and are organised only by acquisition year
     raw_dir = (
         RAW_DIR
-        / aoi_id
     )
+
+    # AOI-specific data directories.
 
     preprocessed_dir = (
         PREPROCESSED_30M_DIR
@@ -99,12 +99,22 @@ def run_pipeline(
 
     # 1. Download satellite data
 
-    download_satellite(
-        aoi,
-        raw_dir,
+    for year in range(
         start_year,
-        end_year,
-    )
+        end_year + 1,
+    ):
+
+        year_raw_dir = (
+            RAW_DIR
+            / str(year)
+        )
+
+        download_satellite(
+            aoi,
+            year_raw_dir,
+            year,
+            year,
+        )
 
     # 2. Common preprocessing
 
@@ -114,7 +124,7 @@ def run_pipeline(
     ):
 
         year_raw_dir = (
-            raw_dir
+            RAW_DIR
             / str(year)
         )
 
@@ -155,7 +165,7 @@ def run_pipeline(
         )
 
         annual_mean_features(
-            preprocessed_dir,
+            year_preprocessed_dir,
             annual_path,
             year,
         )

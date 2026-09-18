@@ -77,10 +77,9 @@ def run_external_evaluation(
         Path(aoi).stem
     )
 
+    # Raw satellite scenes may be shared between AOIs. Only the year is used to organise the original satellite scene assets.
     raw_dir = (
-        Path(PREPROCESSED_30M_DIR).parent
-        / "Raw"
-        / external_aoi_id
+        Path(RAW_DIR)
         / str(year)
     )
 
@@ -222,6 +221,8 @@ def run_external_evaluation(
         model_year,
         resolution,
         split="external_test",
+        evaluation_type="external",
+        evaluation_year=year,
     )
 
     print(

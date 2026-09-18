@@ -103,6 +103,9 @@ def download_satellite(
     end_day=DEFAULT_END_DAY,
 ):
 
+
+    # Raw satellite scenes can be shared across AOIs. Scene IDs are used as unique scene folders, allowing different AOIs to reuse the same downloaded satellite scenes without duplication
+
     output_folder = Path(output_folder)
     output_folder.mkdir(
         parents=True,

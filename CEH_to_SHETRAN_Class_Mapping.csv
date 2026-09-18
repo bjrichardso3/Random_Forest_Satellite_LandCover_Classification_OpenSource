@@ -1,0 +1,22 @@
+CEH class number,CEH Class,shetran class number,shetran class
+1,Broadleaved Woodland,4,Deciduous Forest
+2,Coniferous Woodland,5,Evergreen Forest
+3,Arable and horticulture,1,Arable
+4,Improved Grassland,3,Grass
+5,Neutral Grassland,3,Grass
+6,Calcareous Grassland,3,Grass
+7,Acid Grassland,3,Grass
+8,"Fen, Marsh, and Swamp",6,Shrub
+9,Heather,6,Shrub
+10,Heather Grassland ,6,Shrub
+11,Bog,6,Shrub
+12,Inland Rock,2,Bare Ground
+13,Saltwater,8,Water
+14,Freshwater,8,Water
+15,Supra-littoral rock,2,Bare Ground
+16,Supra-littoral sediment,2,Bare Ground
+17,littoral rock,2,Bare Ground
+18,Littoral sediment,2,Bare Ground
+19,saltmarsh,6,Shrub
+20,urban ,7,Urban
+21,suburban,7,Urban
